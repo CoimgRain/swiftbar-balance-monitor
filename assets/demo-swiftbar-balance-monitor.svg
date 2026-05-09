@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
-  <title id="title">SwiftBar 余额监控示意图</title>
-  <desc id="desc">一张脱敏的 macOS 菜单栏下拉示意图，展示余额和订阅用量。</desc>
+  <title id="title">菜单栏余额监控示意图</title>
+  <desc id="desc">一张脱敏的苹果电脑菜单栏下拉示意图，展示余额和订阅用量。</desc>
   <defs>
     <linearGradient id="wall" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#8d8f96"/>
@@ -25,7 +25,7 @@
   <text x="205" y="40" fill="#f6f6f7" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="28" font-weight="700">汪 $50.20 / 订86.4%</text>
   <text x="535" y="40" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="28" font-weight="700">葵 ¥8.09</text>
   <text x="720" y="40" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="26" font-weight="700">☾ 24°C</text>
-  <text x="900" y="40" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="26" font-weight="700">CPU 67°</text>
+  <text x="900" y="40" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="26" font-weight="700">处理器 67°</text>
 
   <rect x="158" y="72" width="820" height="602" rx="26" fill="url(#menu)" stroke="#777a82" stroke-width="2" filter="url(#shadow)"/>
 
@@ -35,7 +35,7 @@
     <text x="198" y="240">订阅剩余：$40.88 / $300.00（13.6%）</text>
     <text x="198" y="298">订阅：订阅 已使用 72.7% · $109.12 / $150.00</text>
     <text x="198" y="356">订阅：订阅 已使用 100.0% · $150.00 / $150.00</text>
-    <text x="198" y="414">账号：DEMO</text>
+    <text x="198" y="414">账号：演示</text>
     <text x="198" y="472">更新时间：2026-01-01 12:00:00</text>
   </g>
 
