@@ -1,0 +1,4 @@
+interface:
+  display_name: "SwiftBar Balance Monitor"
+  short_description: "Build safe SwiftBar balance monitors"
+  default_prompt: "Use $swiftbar-balance-monitor with a high-reasoning model to build a SwiftBar menu bar monitor for my API balance website."

@@ -1,0 +1,16 @@
+.DS_Store
+__pycache__/
+*.pyc
+
+# Local validation sandboxes
+tmp/
+.tmp/
+
+# Never commit generated monitor runtime state.
+state.json
+cache.json
+cookies.txt
+.env
+*.env
+*.har
+*.webarchive
