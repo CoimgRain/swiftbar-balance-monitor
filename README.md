@@ -23,21 +23,27 @@
 
 ## 安装 Skill
 
-把这个仓库克隆到 Codex 的 Skills 目录：
+推荐用 Codex 自带的 Skill 安装器直接装：
 
 ```bash
-mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
-git clone https://github.com/CoimgRain/swiftbar-balance-monitor.git \
-  "${CODEX_HOME:-$HOME/.codex}/skills/swiftbar-balance-monitor"
+python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-installer/scripts/install-skill-from-github.py" \
+  --repo CoimgRain/swiftbar-balance-monitor \
+  --path . \
+  --name swiftbar-balance-monitor \
+  --method git
 ```
 
-然后重启 Codex，或者打开一个新的 Codex 会话，让 Skill 元数据重新加载。
+如果你在 Codex 里操作，也可以直接说“安装 GitHub 上的 `CoimgRain/swiftbar-balance-monitor` 这个 Skill”。
+
+安装完后重启 Codex，或者打开一个新的 Codex 会话，让 Skill 元数据重新加载。
 
 之后可以这样对 Codex 说：
 
 ```text
 使用 $swiftbar-balance-monitor，帮我给这个中转站网站做一个 SwiftBar 菜单栏余额监控。
 ```
+
+如果你想手动装，也可以把这个仓库克隆到 `${CODEX_HOME:-$HOME/.codex}/skills/swiftbar-balance-monitor`。
 
 如果需要分析网站接口、登录态、订阅字段和额度单位，建议使用高推理模型，例如 GPT-5.5，并开启 high 或 xhigh reasoning。只是改文字、改模板这类简单任务，可以用更快的模型。
 
