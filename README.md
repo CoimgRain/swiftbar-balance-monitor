@@ -1,37 +1,37 @@
-# SwiftBar Balance Monitor Skill
+# SwiftBar 余额监控 Skill
 
-Build a local macOS menu bar monitor for API balance, wallet quota, subscription usage, and relay-site spending with SwiftBar or xbar.
+用 SwiftBar 或 xbar 在 macOS 菜单栏里显示 API 余额、钱包额度、订阅用量和中转站消耗。
 
-![SwiftBar balance monitor demo](assets/demo-swiftbar-balance-monitor.svg)
+![SwiftBar 余额监控示意图](assets/demo-swiftbar-balance-monitor.svg)
 
-This repository is a Codex Skill. It teaches Codex how to work with a user step by step: inspect the user's site, find the relevant wallet/profile/subscription APIs, create a site-specific Python adapter, generate SwiftBar plugin entries, keep secrets local, and refine the menu until it looks right.
+这是一个 Codex Skill。它的作用不是提供一个写死的网站监控 App，而是教 Codex 按用户的网站一步一步配置：查看网站接口、找到钱包/账号/订阅数据、写对应的 Python 适配脚本、生成 SwiftBar 插件入口、把密钥和登录态留在本地，并持续调整菜单栏文字和下拉内容，直到效果符合用户习惯。
 
-It is designed for websites that are too different to support with one universal app. Each site gets a small adapter, but the project structure, SwiftBar output, privacy rules, display-mode toggles, and validation flow are reusable.
+这类网站差异很大，很难用一个通用应用完全覆盖。每个网站都可以有自己的小适配器，但目录结构、SwiftBar 输出格式、隐私规则、显示模式切换和验证流程都可以复用。
 
-## What It Helps You Build
+## 可以做什么
 
-A finished monitor can show things like:
+最终效果可以包括：
 
-- Menu bar balance, for example `Ex $50.20 / 订86.4%`.
-- Dropdown balance details.
-- Daily or monthly usage.
-- Subscription used and remaining quota.
-- Per-subscription usage percentages.
-- Account name.
-- Last update time.
-- Menu actions such as refresh, open wallet, and switch between used/remain percentage.
+- 菜单栏余额，例如 `汪 $50.20 / 订86.4%`。
+- 下拉里的余额详情。
+- 今日消耗、本月消耗。
+- 订阅已使用额度和剩余额度。
+- 每个订阅单独的使用百分比。
+- 账号名。
+- 更新时间。
+- 刷新、打开钱包、切换已使用/剩余百分比等菜单动作。
 
-The generated templates already include the SwiftBar no-op row pattern:
+生成模板已经默认处理 SwiftBar 下拉文字变灰的问题。展示行会自动带上无副作用动作：
 
 ```text
-Balance: $50.20 | bash=/usr/bin/true terminal=false
+余额：$50.20 | bash=/usr/bin/true terminal=false
 ```
 
-That keeps display-only rows readable instead of macOS rendering them as disabled gray text.
+这样 macOS 不会把这些纯展示行当成禁用菜单项渲染成灰色，点到也不会执行真正操作。
 
-## Install The Skill
+## 安装 Skill
 
-Clone this repository into your Codex skills directory:
+把这个仓库克隆到 Codex 的 Skills 目录：
 
 ```bash
 mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
@@ -39,54 +39,56 @@ git clone https://github.com/CoimgRain/swiftbar-balance-monitor.git \
   "${CODEX_HOME:-$HOME/.codex}/skills/swiftbar-balance-monitor"
 ```
 
-Restart Codex or open a new Codex session so the skill metadata is loaded.
+然后重启 Codex，或者打开一个新的 Codex 会话，让 Skill 元数据重新加载。
 
-Then ask Codex something like:
+之后可以这样对 Codex 说：
 
 ```text
-Use $swiftbar-balance-monitor to build a SwiftBar menu bar monitor for my API balance website.
+使用 $swiftbar-balance-monitor，帮我给这个中转站网站做一个 SwiftBar 菜单栏余额监控。
 ```
 
-For interface discovery and authentication debugging, use a strong high-reasoning model when available, such as GPT-5.5 with high or xhigh reasoning. Simpler template edits can use a faster model.
+如果需要分析网站接口、登录态、订阅字段和额度单位，建议使用高推理模型，例如 GPT-5.5，并开启 high 或 xhigh reasoning。只是改文字、改模板这类简单任务，可以用更快的模型。
 
-## Requirements
+## 使用前准备
 
-- macOS.
-- [SwiftBar](https://swiftbar.app/) or xbar.
-- Python 3.
-- A logged-in browser session, cookie, API token, or other local auth method for the target website.
-- Codex with Skills support.
+你需要：
 
-## How The Setup Works
+- macOS。
+- SwiftBar 或 xbar。
+- Python 3。
+- 目标网站的登录态、Cookie、API Token，或已经登录的网站页面。
+- 支持 Skills 的 Codex。
 
-Codex should guide the user through this flow:
+## 配置流程
 
-1. Confirm the target site, menu label, currency, and what should be shown.
-2. Inspect wallet/profile/usage/subscription APIs from DevTools, site assets, or existing scripts.
-3. Create one service folder and one SwiftBar plugin entry.
-4. Implement `fetch_usage.py` for that specific site.
-5. Store runtime secrets locally in ignored files or environment variables.
-6. Validate Python syntax and SwiftBar output.
-7. Start or restart SwiftBar pointed at the `swiftbar-plugins/` folder.
-8. Ask the user to confirm the menu result and iterate.
+Codex 应该按这个流程帮用户做：
 
-This is usually not perfect in one pass. Websites differ in quota units, subscription fields, auth behavior, names, and UI preferences. After the first working version, the user can ask to change labels, percentages, ordering, refresh interval, displayed fields, colors/readability, or actions.
+1. 确认要监控的网站、菜单栏简称、货币符号和想显示的内容。
+2. 从浏览器开发者工具、网站前端资源或已有脚本里寻找钱包、账号、用量、订阅接口。
+3. 为这个网站创建一个服务目录和一个 SwiftBar 插件入口。
+4. 为这个网站实现 `fetch_usage.py`。
+5. 把 Cookie、Token、缓存等运行状态保存在本地忽略文件或环境变量里。
+6. 验证 Python 语法和 SwiftBar 输出。
+7. 启动或重启 SwiftBar，并确认它只扫描 `swiftbar-plugins/` 目录。
+8. 让用户看菜单栏效果，再根据反馈继续调整。
 
-## Scaffold A Monitor Project
+这类监控通常不是一次就能完全生成好的。不同网站的额度单位、订阅字段、登录方式、接口返回和用户偏好都可能不一样。先做出可运行版本，再根据用户反馈继续改字段、文字、百分比、刷新频率、显示顺序、颜色和菜单动作。
 
-The skill includes a reusable scaffold script. From the skill directory:
+## 生成监控项目骨架
+
+Skill 里带了一个可复用脚手架脚本。在 Skill 目录里运行：
 
 ```bash
 python3 scripts/scaffold_monitor.py \
   --output ~/balance-monitor \
   --service-id example-relay \
-  --label Ex \
+  --label 汪 \
   --currency '$' \
   --subscription-prefix '订' \
   --base-url-default https://example.com
 ```
 
-It creates:
+它会生成：
 
 ```text
 balance-monitor/
@@ -100,24 +102,24 @@ balance-monitor/
   .gitignore
 ```
 
-Then edit:
+然后编辑：
 
 ```text
 ~/balance-monitor/example-relay/fetch_usage.py
 ```
 
-Implement `fetch_all()` for the target site's real API response.
+把其中的 `fetch_all()` 改成目标网站真实接口的读取和字段映射逻辑。
 
-## Start SwiftBar
+## 启动 SwiftBar
 
-Point SwiftBar at the plugin folder, not the project root:
+让 SwiftBar 扫描插件入口目录，不要扫描项目根目录：
 
 ```bash
 PLUGIN_DIR="$HOME/balance-monitor/swiftbar-plugins"
 open -a SwiftBar --args --folders "$PLUGIN_DIR"
 ```
 
-To restart:
+如果要重启刷新：
 
 ```bash
 PLUGIN_DIR="$HOME/balance-monitor/swiftbar-plugins"
@@ -125,7 +127,7 @@ pkill -f '/Applications/SwiftBar.app/Contents/MacOS/SwiftBar' || true
 open -a SwiftBar --args --folders "$PLUGIN_DIR"
 ```
 
-Validate:
+验证命令：
 
 ```bash
 python3 -m py_compile "$HOME/balance-monitor/example-relay/fetch_usage.py"
@@ -133,28 +135,28 @@ python3 -m py_compile "$HOME/balance-monitor/example-relay/fetch_usage.py"
 ps aux | rg -i '[S]wiftBar'
 ```
 
-## Privacy And Publishing
+## 隐私和发布检查
 
-Never publish runtime state or credentials:
+不要公开上传运行状态和凭据：
 
 - `state.json`
 - `cache.json`
 - `cookies.txt`
 - `.env`
-- HAR files
-- screenshots with account details
-- browser exports
-- real account names, phone numbers, emails, cookies, tokens, or passwords
+- HAR 文件
+- 带账号信息的截图
+- 浏览器导出文件
+- 真实账号名、手机号、邮箱、Cookie、Token、密码
 
-Before uploading a monitor project or sharing code, run:
+分享代码或上传仓库前运行：
 
 ```bash
 python3 scripts/privacy_scan.py /path/to/project
 ```
 
-The demo image in this repository is sanitized and uses fake data.
+本仓库里的示意图是脱敏图，使用的是假数据，不是用户真实截图。
 
-## Repository Contents
+## 仓库内容
 
 ```text
 SKILL.md
@@ -174,6 +176,6 @@ scripts/
   scaffold_monitor.py
 ```
 
-## License
+## 许可证
 
-No license has been selected yet. Add one before distributing beyond personal or internal use.
+暂时还没有选择许可证。如果要作为公开项目长期分发，建议后续补一个明确的开源许可证。
