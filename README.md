@@ -2,7 +2,7 @@
 
 用 SwiftBar 或 xbar 在 macOS 菜单栏里显示 API 余额、钱包额度、订阅用量和中转站消耗。
 
-![SwiftBar 余额监控示意图](assets/demo-swiftbar-balance-monitor.svg)
+![SwiftBar 余额监控截图](assets/swiftbar-balance-monitor-screenshot.png)
 
 这是一个 Codex Skill。它的作用不是提供一个写死的网站监控 App，而是教 Codex 按用户的网站一步一步配置：查看网站接口、找到钱包/账号/订阅数据、写对应的 Python 适配脚本、生成 SwiftBar 插件入口、把密钥和登录态留在本地，并持续调整菜单栏文字和下拉内容，直到效果符合用户习惯。
 
@@ -144,7 +144,7 @@ ps aux | rg -i '[S]wiftBar'
 - `cookies.txt`
 - `.env`
 - HAR 文件
-- 带账号信息的截图
+- 带账号信息的截图，除非你明确决定公开展示
 - 浏览器导出文件
 - 真实账号名、手机号、邮箱、Cookie、Token、密码
 
@@ -154,7 +154,7 @@ ps aux | rg -i '[S]wiftBar'
 python3 scripts/privacy_scan.py /path/to/project
 ```
 
-本仓库里的示意图是脱敏图，使用的是假数据，不是用户真实截图。
+本仓库首页使用的是一张真实效果截图，用来展示最终菜单栏观感。发布你自己的项目时，请先确认截图里没有不想公开的账号、余额、时间、桌面背景或其他个人信息。
 
 ## 仓库内容
 
@@ -162,7 +162,7 @@ python3 scripts/privacy_scan.py /path/to/project
 SKILL.md
 agents/openai.yaml
 assets/
-  demo-swiftbar-balance-monitor.svg
+  swiftbar-balance-monitor-screenshot.png
   templates/
     fetch_usage.py.tpl
     gitignore.tpl
